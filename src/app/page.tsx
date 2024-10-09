@@ -1,9 +1,9 @@
-import TicTacToeGame from "@/components/TicTacToeGame";
+import CardGame from "@/components/CardGame";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <div className="grid items-center justify-items-center min-h-screen p-2 font-[family-name:var(--font-geist-sans)] bg-gray-100">
-      <TicTacToeGame />
+    <div className="flex justify-center items-center gap-10 min-h-screen p-2 font-[family-name:var(--font-geist-sans)] bg-gray-100">
+      <CardGame />
     </div>
   );
 }
