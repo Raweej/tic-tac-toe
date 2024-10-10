@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const TicTacToeGame = () => {
-  const { user, error, isLoading } = useUser();
+  const { user } = useUser();
   const username = user?.nickname;
   const email = user?.email;
 
@@ -63,7 +63,7 @@ const TicTacToeGame = () => {
     }
   };
 
-  const handleUpdateLeaderboard = async (username, email, score) => {
+  const handleUpdateLeaderboard = async ({ username, email, score }: any) => {
     const response = await fetch("/api/leaderboard", {
       method: "POST",
       body: JSON.stringify({ username, email, score }),
@@ -73,7 +73,7 @@ const TicTacToeGame = () => {
     }
   };
 
-  const handleGameEnd = (result) => {
+  const handleGameEnd = (result: any) => {
     setWinner(result);
     if (result === "X") {
       const newScore = score + 1;
@@ -84,11 +84,15 @@ const TicTacToeGame = () => {
         setScore(newScore + 1);
         setWinStreak(0);
       }
-      handleUpdateLeaderboard(username, email, newScore);
+      handleUpdateLeaderboard({ username, email, newScore });
     } else if (result === "O") {
       setScore(Math.max(0, score - 1));
       setWinStreak(0);
-      handleUpdateLeaderboard(username, email, Math.max(0, score - 1));
+      handleUpdateLeaderboard({
+        username,
+        email,
+        score: Math.max(0, score - 1),
+      });
     }
   };
 
