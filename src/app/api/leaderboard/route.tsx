@@ -12,13 +12,12 @@ const schema = z.object({
 export async function GET() {
   try {
     const db = client.db("tic-tac-toe");
-    const movies = await db
+    const score = await db
       .collection("scores")
       .find({})
-      .sort({ metacritic: -1 })
-      .limit(10)
+      .sort({ score: -1 })
       .toArray();
-    return NextResponse.json(movies);
+    return NextResponse.json(score);
   } catch (e) {
     console.error(e);
   }

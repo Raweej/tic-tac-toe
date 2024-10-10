@@ -29,17 +29,20 @@ export const useTicTacToe = (username: string, email: string) => {
         const newWinStreak = winStreak + 1;
         setScore(newScore);
         setWinStreak(newWinStreak);
-        updateLeaderboard({ username, email, score: newScore });
-
         if (newWinStreak === 3) {
-          setScore(newScore + 1); // Bonus point for streak
+          const scoreBonus = newScore + 1;
+          setScore(scoreBonus); // Bonus point for streak
           setWinStreak(0); // Reset win streak
+          return updateLeaderboard({ username, email, score: scoreBonus });
         }
+
+        return updateLeaderboard({ username, email, score: newScore });
       } else if (result === "O") {
         const updatedScore = Math.max(0, score - 1);
         setScore(updatedScore);
         setWinStreak(0);
-        updateLeaderboard({ username, email, score: updatedScore });
+
+        return updateLeaderboard({ username, email, score: updatedScore });
       }
     },
     [score, winStreak, username, email, updateLeaderboard]
