@@ -4,7 +4,7 @@ if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI || "";
 const options = {};
 
 let client: MongoClient;
@@ -21,4 +21,5 @@ if (process.env.NODE_ENV === "development") {
 } else {
   client = new MongoClient(uri, options);
 }
+
 export default client;
