@@ -38,7 +38,11 @@ const Leaderboard = () => {
           </TableRow>
         </TableHeader>
         {isLoading ? (
-          <div className="text-center">Loading...</div>
+          <TableBody>
+            <TableRow>
+              <TableCell>Loading...</TableCell>
+            </TableRow>
+          </TableBody>
         ) : (
           <TableBody>
             {leaderboard.map((entry, index) => (
