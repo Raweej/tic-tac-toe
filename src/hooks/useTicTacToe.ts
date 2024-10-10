@@ -21,6 +21,30 @@ export const useTicTacToe = (username: string, email: string) => {
     return null;
   }, []);
 
+  const handleGameEnd = useCallback(
+    (result: string) => {
+      setWinner(result);
+      if (result === "X") {
+        const newScore = score + 1;
+        const newWinStreak = winStreak + 1;
+        setScore(newScore);
+        setWinStreak(newWinStreak);
+        updateLeaderboard({ username, email, score: newScore });
+
+        if (newWinStreak === 3) {
+          setScore(newScore + 1); // Bonus point for streak
+          setWinStreak(0); // Reset win streak
+        }
+      } else if (result === "O") {
+        const updatedScore = Math.max(0, score - 1);
+        setScore(updatedScore);
+        setWinStreak(0);
+        updateLeaderboard({ username, email, score: updatedScore });
+      }
+    },
+    [score, winStreak, username, email, updateLeaderboard]
+  );
+
   const botMove = useCallback(() => {
     const emptySquares = board.reduce((acc, square, index) => {
       if (!square) acc.push(index);
@@ -40,7 +64,7 @@ export const useTicTacToe = (username: string, email: string) => {
     } else {
       setIsPlayerTurn(true);
     }
-  }, [board, checkWinner]);
+  }, [board, checkWinner, handleGameEnd]);
 
   const handleCellClick = (index: number) => {
     if (board[index] || winner || !isPlayerTurn) return;
@@ -54,27 +78,6 @@ export const useTicTacToe = (username: string, email: string) => {
       handleGameEnd("draw");
     } else {
       setIsPlayerTurn(false);
-    }
-  };
-
-  const handleGameEnd = (result: string) => {
-    setWinner(result);
-    if (result === "X") {
-      const newScore = score + 1;
-      const newWinStreak = winStreak + 1;
-      setScore(newScore);
-      setWinStreak(newWinStreak);
-      updateLeaderboard({ username, email, score: newScore });
-
-      if (newWinStreak === 3) {
-        setScore(newScore + 1); // Bonus point for streak
-        setWinStreak(0); // Reset win streak
-      }
-    } else if (result === "O") {
-      const updatedScore = Math.max(0, score - 1);
-      setScore(updatedScore);
-      setWinStreak(0);
-      updateLeaderboard({ username, email, score: updatedScore });
     }
   };
 
