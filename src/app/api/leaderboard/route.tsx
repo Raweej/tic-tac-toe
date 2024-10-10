@@ -9,7 +9,7 @@ const schema = z.object({
   score: z.number(),
 });
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET() {
   try {
     const db = client.db("tic-tac-toe");
     const movies = await db
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const response = schema.safeParse(await req.json());
   if (!response.success) {
     return NextResponse.json({ message: response.error }, { status: 400 });
