@@ -17,28 +17,29 @@ const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderScore[]>([]);
 
   useEffect(() => {
-    fetch("/api/leaderboard")
-      .then((response) => response.json())
-      .then((data) => {
-        setLeaderboard(data);
-        setIsLoading(false);
-      });
+    const fetchLeaderboard = async () => {
+      const response = await fetch("/api/leaderboard");
+      const data = await response.json();
+      setLeaderboard(data);
+      setIsLoading(false);
+    };
+    fetchLeaderboard();
   }, []);
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Leaderboard</h2>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Table className="block h-[400px]">
-          <TableHeader className="overflow-y-auto">
-            <TableRow>
-              <TableHead>Rank</TableHead>
-              <TableHead>Username</TableHead>
-              <TableHead>Score</TableHead>
-            </TableRow>
-          </TableHeader>
+      <Table className="block h-[400px]">
+        <TableHeader className="overflow-y-auto">
+          <TableRow>
+            <TableHead>Rank</TableHead>
+            <TableHead>Username</TableHead>
+            <TableHead>Score</TableHead>
+          </TableRow>
+        </TableHeader>
+        {isLoading ? (
+          <div className="text-center">Loading...</div>
+        ) : (
           <TableBody>
             {leaderboard.map((entry, index) => (
               <TableRow key={entry.username}>
@@ -48,8 +49,8 @@ const Leaderboard = () => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      )}
+        )}
+      </Table>
     </div>
   );
 };
